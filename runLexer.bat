@@ -1,1 +1,1 @@
-java -cp "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\build\src\classes" Lexer "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\TestFiles\totalSyntax.nc"
+java -cp "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\build\src\classes" Lexer "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\TestFiles\constDef.nc"

@@ -1,4 +1,4 @@
-public class dankMeme{
+class dankMeme{
     $boolean;
     const $max = 255;
     $string = "hello";

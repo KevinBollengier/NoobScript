@@ -8,9 +8,13 @@ PARSER_BEGIN(Lexer)
     import java.io.FileNotFoundException;
 	public class Lexer{
 	    public static void main(String[] args)throws ParseException{
-	        Lexer lexer = new Lexer(new java.io.FileInputStream(args[0]));
-	        SimpleNode root = lexer.program();
-	        root.dump("");
+	        try{
+                Lexer lexer = new Lexer(new java.io.FileInputStream(args[0]));
+                SimpleNode root = lexer.program();
+                root.dump("");
+	        }catch(java.io.FileNotFoundException e){
+	            System.out.println("Parser: the file"+args[0]+"was not found");
+	        }
 	    }
 		 /*public static void main(java.lang.String[] args) throws ParseException,TokenMgrError {
 			Lexer lexer;
@@ -119,15 +123,15 @@ void id()#ID:{Token t;}{
 }
 void declarationList()#declarationlist:{}
 {
-    (declaration() | (<COMMA> declaration())*)
+    LOOKAHEAD(3)declaration() |LOOKAHEAD(3) (<COMMA> declaration())*
 }
 void declaration()#declaration:{}
 {
-    varDeclaration() | funDeclaration() | constructor()
+    LOOKAHEAD(2)varDeclaration() |LOOKAHEAD(2) funDeclaration() |LOOKAHEAD(2) constructor()
 }
 void varDeclaration()#vardeclaration:{}
 {
-    ((accessMod())? (constant())? (varDeclarationList()|(varAssignList())<SC>) )
+    ((accessMod())? (constant())? (LOOKAHEAD(3) varDeclarationList()|(varAssignList())<SC>) )
 }
 void accessMod()#accessMod:{}
 {
@@ -139,7 +143,7 @@ void constant()#constant:{}
 }
 void varDeclarationList()#varDecList:{}
 {
-    varID()|((<COMMA>)varID())*
+    LOOKAHEAD(2)varID()|(LOOKAHEAD(2)<COMMA>varID())*
 }
 void varID()#varID:{}
 {
@@ -203,17 +207,17 @@ void compoundStmt()#cmpdStmt:{}
 }
 void ifStmt()#ifStmt:{}
 {
-    <IF><LCB>expression()<RCB> <THEN> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
+    LOOKAHEAD(3)<IF><LCB>expression()<RCB> <THEN> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
 }
 void expression()#expression:{}
 {
-    (mutable() binaryop() expression())
-    | (mutable() sumop() term())
-    | (mutable() mulop() term())
-    | (mutable() eqAssign() expression())
-    | (incdec())
-    | immutable()
-    | io()
+    LOOKAHEAD(3)(mutable() binaryop() expression())
+    | LOOKAHEAD(3) (mutable() sumop() term())
+    | LOOKAHEAD(3) (mutable() mulop() term())
+    | LOOKAHEAD(3) (mutable() eqAssign() expression())
+    | LOOKAHEAD(3) (incdec())
+    | LOOKAHEAD(3) immutable()
+    | LOOKAHEAD(3) io()
 }
 void mutable()#mutable:{}
 {
@@ -247,16 +251,16 @@ void term()#term:{}
 }
 void eqAssign()#assignOp:{}
 {
-    mutable() <EQ> expression()
-    | mutable() <ADDASSIGN> expression()
-    | mutable() <SUBASSIGN> expression()
-    | mutable() <MULASSIGN> expression()
-    | mutable() <DIVASSIGN> expression()
-    | mutable() <POWASSIGN> expression()
+     <EQ> expression()
+    | <ADDASSIGN> expression()
+    | <SUBASSIGN> expression()
+    | <MULASSIGN> expression()
+    | <DIVASSIGN> expression()
+    | <POWASSIGN> expression()
 }
 void incdec()#incdecOp:{}
 {
-    mutable()<INC> | mutable()<DEC>
+    LOOKAHEAD(3)mutable()<INC> |LOOKAHEAD(3) mutable()<DEC>
 }
 void immutable()#immutable:{}
 {

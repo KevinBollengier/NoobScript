@@ -1,1 +1,3 @@
-const definedVar = 112;
+class test{
+    public const $neger = 5
+}
