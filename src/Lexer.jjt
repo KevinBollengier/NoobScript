@@ -1,0 +1,285 @@
+options{
+  STATIC = false;
+  JDK_VERSION = "1.5";
+}
+PARSER_BEGIN(Lexer)
+    import java.util.List;
+    import java.util.ArrayList;
+    import java.io.FileNotFoundException;
+	public class Lexer{
+	    public static void main(String[] args)throws ParseException{
+	        Lexer lexer = new Lexer(new java.io.FileInputStream(args[0]));
+	        SimpleNode root = lexer.program();
+	        root.dump("");
+	    }
+		 /*public static void main(java.lang.String[] args) throws ParseException,TokenMgrError {
+			Lexer lexer;
+			System.out.println("Lexical analyser is now trying to read file..");
+			if(args.length == 1){
+			    System.out.println("Lexer is trying to read file: "+args[0]+"...");
+			    try{
+                    lexer = new Lexer(new java.io.FileInputStream(args[0]));
+                    System.out.println("Starting to parse..");
+                    for(Token token : tokenize(lexer)){
+                        String name = LexerConstants.tokenImage[token.kind];
+                        //String name = token.image;
+                        System.out.println(token.beginLine +  ":" + name + "=>"+token.image);
+                    }
+                    System.out.println("Input was read.");
+			    }catch(java.io.FileNotFoundException e){
+                    System.out.println("Lexer: the file"+args[0]+"was not found..");
+			        return;
+			    }
+			}
+		}
+		public static List<Token> tokenize (Lexer lexer) throws FileNotFoundException{
+		    List<Token> tokens = new ArrayList<Token>();
+		    Token token = lexer.getNextToken();
+		    while(token.kind != LexerConstants.EOF){
+		        tokens.add(token);
+		        token = lexer.getNextToken();
+		    }
+		    return tokens;
+		}*/
+}PARSER_END(Lexer)
+
+TOKEN:{
+
+   <CONST: "const">
+  | <TRUE: "true">
+  | <FALSE: "false">
+  | <CONSTR:  "construct">
+  | <THIS:  "this">
+  | <FUNC: "function">
+  | <RETURN: "return">
+  | <READ: "read">
+  | <WRITE: "write">
+  | <CLASS: "class">
+  | <PUBLIC: "public">
+  | <PRIVATE: "private">
+  | <IF: "if">
+  | <THEN: "then">
+  | <ELSE: "else">
+  | <WHILE: "asLongAs">
+  | <INT:(["0"-"9"])+>
+  | <ID: (["a"-"z","A"-"Z","0"-"9","_"])+ >
+  | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >
+  | <COMMA:([","])>
+  | <ADD:(["+"])>
+  | <ADDASSIGN: (["+"]["="])>
+  | <SUBASSIGN: (["-"]["="])>
+  | <MULASSIGN: (["*"])(["="])>
+  | <POWASSIGN: (["*"]["*"]["="])>
+  | <DIVASSIGN: (["/"])(["="])>
+  | <INC:(["+"]["+"])>
+  | <SUB:(["-"])>
+  | <DEC:(["-"]["-"])>
+  | <MUL:(["*"])>
+  | <POW:(["*"]["*"])>
+  | <DIV:(["/"])>
+  | <MOD:(["%"])>
+  | <LCB:(["("])>
+  | <RCB:([")"])>
+  | <LBR:(["{"])>
+  | <RBR:(["}"])>
+  | <EQ:(["="])>
+  | <NOT:(["!"])>
+  | <NEQ:(["!"]["="])>
+  | <GT:([">"])>
+  | <LT:(["<"])>
+  | <GOE:([">"]["="])>
+  | <LOE:(["<"]["="])>
+  | <ARROW:(["-"][">"])>
+  | <COMPARISON:(["="]["="])>
+  | <AND:(["&"]["&"])>
+  | <OR:(["|"]["|"])>
+  | <SC:([";"])>
+  | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >
+}
+
+SKIP:{
+  " "
+  | "\t"
+  | "\n"
+  | "\r"
+  |< "//" (~["\r", "\n"])* >
+  |<"/*" (~["*"])* "*" (~["*","/"] (~["*"])* "*" | "*")* "/">
+}
+
+SimpleNode program()#program:{}
+{
+    classDeclaration()
+}
+void classDeclaration()#classDeclaration:{}
+{
+    <CLASS>id()<LBR>declarationList()<RBR>
+}
+void id()#ID:{Token t;}{
+    t = <ID> {jjThis.value = t.image;}
+}
+void declarationList()#declarationlist:{}
+{
+    (declaration() (<COMMA> declaration())*)
+}
+void declaration()#declaration:{}
+{
+    varDeclaration() | funDeclaration() | constructor()
+}
+void varDeclaration():{}
+{
+    ((accessMod())? (constant())? (varDeclarationList()|(varAssignList())<SC>) )
+}
+void accessMod()#accessMod:{}
+{
+    <PRIVATE> | <PUBLIC>
+}
+void constant()#constant:{}
+{
+    <CONST>
+}
+void varDeclarationList()#varDecList:{}
+{
+    varID()|((<COMMA>)varID())*
+}
+void varID()#varID:{}
+{
+    <VARID>
+}
+void varAssignList()#varAssignList:{}
+{
+   (<VARID> <EQ> value())|((<COMMA>varID())*<EQ>value())
+}
+void value()#value:{}
+{
+    bool()|integer()|string()
+}
+void bool()#bool:{}
+{
+    <TRUE>|<FALSE>
+}
+void integer()#integer:{}
+{
+    <INT>
+}
+void string()#string:{}
+{
+    <STRLIT>
+}
+void funDeclaration():{}
+{
+    ((accessMod())? <FUNC><ID><LCB>params()<RCB>statement())
+}
+void constructor():{}
+{
+    ((accessMod())?<CONSTR><ID><LCB>params()<RCB>constrStmt())
+}
+void constrStmt()#constrStmt:{}
+{
+    <THIS><ARROW><ID><EQ><ID><SC>
+}
+void params()#parameters:{}
+{
+    (varID() | ((<COMMA>varID())*))?
+}
+void statement()#statement:{}
+{
+    expressionStmt() | returnStmt() | iterationStmt() | compoundStmt() | ifStmt()
+}
+void expressionStmt()#expression:{}
+{
+    expression()<SC>
+}
+void returnStmt()#returnStmt:{}
+{
+    <RETURN>(expression())?<SC>
+}
+void iterationStmt()#iteration:{}
+{
+    <WHILE><LCB>expression()<RCB>statement()
+}
+void compoundStmt()#cmpdStmt:{}
+{
+    <LBR>(statement())*<RBR>
+}
+void ifStmt()#ifStmt:{}
+{
+    <IF><LCB>expression()<RCB> <Then> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
+}
+void expression()#expression:{}
+{
+    mutable()
+    | (mutable() binaryop() expression())
+    | (mutable() sumop() term())
+    | (mutable() mulop() term())
+    | (mutable() eqAssign() expression())
+    | (incdec())
+    | immutable()
+    | io()
+}
+void mutable()#mutable:{}
+{
+    <VARID> | expression()
+}
+void binaryop():{}{
+    <LOE>
+    | <LT>
+    | <GT>
+    | <GOE>
+    | <COMPARISON>
+    | <NEQ>
+    | <NOT>
+    | <OR>
+    | <AND>
+}
+void sumop()#sumOp:{}
+{
+    <ADD> | <SUB>
+}
+void mulop()#mulOp:{}
+{
+    <MUL>
+    | <DIV>
+    | <MOD>
+    | <POW>
+}
+void term():{}
+{
+    <VARID> | <ID> | <INT> | <STRLIT>
+}
+void eqAssign():{}
+{
+    mutable() <EQ> expression()
+    | mutable() <ADDASSIGN> expression()
+    | mutable() <SUBASSIGN> expression()
+    | mutable() <MULASSIGN> expression()
+    | mutable() <DIVASSIGN> expression()
+    | mutable() <POWASSIGN> expression()
+}
+void incdec():{}
+{
+    mutable()<INC> | mutable()<DEC>
+}
+void immutable():{}
+{
+    call() | varID()
+}
+void io():{}
+{
+    read() | write()
+}
+void read():{}
+{
+    <READ><LCB><RCB>
+}
+void write():{}
+{
+    <WRITE><LCB>params()<RCB>
+}
+void call():{}
+{
+    <ID><LCB>arguments()<RCB>
+}
+void arguments():{}
+{
+    (expression() | ((<COMMA>expression())*))?
+}

@@ -1,0 +1,3 @@
+asLongAs(true){
+    write("hello");
+}

@@ -1,0 +1,1 @@
+$stringVar = "New code stands for .nc";

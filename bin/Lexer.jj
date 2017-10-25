@@ -1,0 +1,110 @@
+options{
+  STATIC = false;
+  JDK_VERSION = "1.5";
+}
+PARSER_BEGIN(Lexer)
+    import java.util.List;
+    import java.util.ArrayList;
+    import java.io.FileNotFoundException;
+	public class Lexer{
+		 public static void main(java.lang.String[] args) throws ParseException,TokenMgrError {
+			Lexer lexer;
+			System.out.println("Lexical analyser is now trying to read file..");
+			if(args.length == 1){
+			    System.out.println("Lexer is trying to read file: "+args[0]+"...");
+			    try{
+                    lexer = new Lexer(new java.io.FileInputStream(args[0]));
+                    System.out.println("Starting to parse..");
+                    for(Token token : tokenize(lexer)){
+                        String name = LexerConstants.tokenImage[token.kind];
+                        System.out.println(token.beginLine + ":" + name + "=>"+token.image);
+                    }
+                    System.out.println("Input was read.");
+			    }catch(java.io.FileNotFoundException e){
+                    System.out.println("Lexer: the file"+args[0]+"was not found..");
+			        return;
+			    }
+			}
+		}
+		public static List<Token> tokenize (Lexer lexer) throws FileNotFoundException{
+		    List<Token> tokens = new ArrayList<Token>();
+		    Token token = lexer.getNextToken();
+		    while(token.kind != LexerConstants.EOF){
+		        tokens.add(token);
+		        token = lexer.getNextToken();
+		    }
+		    return tokens;
+		}
+}PARSER_END(Lexer)
+SKIP:{
+  " "
+  | "\t"
+  | "\n"
+  | "\r"
+  |< "//" (~["\r", "\n"])* >
+}
+
+TOKEN:{
+  <CONST: "const">
+  | <TRUE: "true">
+  | <FALSE: (["false"])>
+  | <CONSTR:  "construct">
+  | <THIS:  "this">
+  | <FUNC: "function">
+  | <RETURN: "return">
+  | <ADD:(["+"])>
+  | <INC:(["+"]["+"])>
+  | <SUB:(["-"])>
+  | <DEC:(["-"]["-"])>
+  | <MUL:(["*"])>
+  | <POW:(["*"]["*"])>
+  | <DIV:(["/"])>
+  | <MOD:(["%"])>
+  | <LBR:(["("])>
+  | <RBR:([")"])>
+  | <LCB:(["{"])>
+  | <RCB:(["}"])>
+  | <EQ:(["="])>
+  | <NOT:(["!"])>
+  | <NEQ:(["!"]["="])>
+  | <GT:([">"])>
+  | <LT:(["<"])>
+  | <GOE:([">"]["="])>
+  | <LOE:(["<"]["="])>
+  | <COMPARISON:(["="]["="])>
+  | <AND:(["&"]["&"])>
+  | <OR:(["|"]["|"])>
+  | <INT:(["0"-"9"])+>
+  | <IF: "if">
+  | <THEN: "then">
+  | <ELSE: "else">
+  | <WHILE: "asLongAs">
+  | <READ: "read">
+  | <WRITE: "write">
+  | <SC:([";"])>
+  | <COMMA:([","])>
+  | <CLASS: "class">
+  | <PUBLIC: "public">
+  | <PRIVATE: "private">
+  | <ID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >
+  | <FUNC_NAME: (["a"-"z","A"-"Z","0"-"9","_"])+ >
+}
+TOKEN_MGR_DECLS :
+{
+  int stringSize;
+}
+
+MORE :
+{
+  "\""  : WithinString
+}
+
+<WithinString> TOKEN :
+{
+  <STRLIT: "\"">  : DEFAULT
+}
+
+<WithinString> MORE :
+{
+  <~["\n","\r"]>
+}
