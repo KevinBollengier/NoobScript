@@ -125,7 +125,7 @@ void declaration()#declaration:{}
 {
     varDeclaration() | funDeclaration() | constructor()
 }
-void varDeclaration():{}
+void varDeclaration()#vardeclaration:{}
 {
     ((accessMod())? (constant())? (varDeclarationList()|(varAssignList())<SC>) )
 }
@@ -165,11 +165,11 @@ void string()#string:{}
 {
     <STRLIT>
 }
-void funDeclaration():{}
+void funDeclaration()#function:{}
 {
     ((accessMod())? <FUNC><ID><LCB>params()<RCB>statement())
 }
-void constructor():{}
+void constructor()#construct:{}
 {
     ((accessMod())?<CONSTR><ID><LCB>params()<RCB>constrStmt())
 }
@@ -203,7 +203,7 @@ void compoundStmt()#cmpdStmt:{}
 }
 void ifStmt()#ifStmt:{}
 {
-    <IF><LCB>expression()<RCB> <Then> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
+    <IF><LCB>expression()<RCB> <THEN> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
 }
 void expression()#expression:{}
 {
@@ -220,7 +220,7 @@ void mutable()#mutable:{}
 {
     <VARID> | expression()
 }
-void binaryop():{}{
+void binaryop()#binaryOp:{}{
     <LOE>
     | <LT>
     | <GT>
@@ -242,11 +242,11 @@ void mulop()#mulOp:{}
     | <MOD>
     | <POW>
 }
-void term():{}
+void term()#term:{}
 {
     <VARID> | <ID> | <INT> | <STRLIT>
 }
-void eqAssign():{}
+void eqAssign()#assignOp:{}
 {
     mutable() <EQ> expression()
     | mutable() <ADDASSIGN> expression()
@@ -255,31 +255,31 @@ void eqAssign():{}
     | mutable() <DIVASSIGN> expression()
     | mutable() <POWASSIGN> expression()
 }
-void incdec():{}
+void incdec()#incdecOp:{}
 {
     mutable()<INC> | mutable()<DEC>
 }
-void immutable():{}
+void immutable()#immutable:{}
 {
     call() | varID()
 }
-void io():{}
+void io()#IO:{}
 {
     read() | write()
 }
-void read():{}
+void read()#input:{}
 {
     <READ><LCB><RCB>
 }
-void write():{}
+void write()#output:{}
 {
     <WRITE><LCB>params()<RCB>
 }
-void call():{}
+void call()#funcCall:{}
 {
     <ID><LCB>arguments()<RCB>
 }
-void arguments():{}
+void arguments()#arguments:{}
 {
     (expression() | ((<COMMA>expression())*))?
 }

@@ -1,10 +1,29 @@
 <project name="TestWithAnt" default="main" basedir="">
-
+    <!--
+        <target name="main">
+            <mkdir dir="build/src/classes" />
+            <javacc
+                    target="src/Lexer.jjt"
+                    outputdirectory="build/src"
+                    javacchome="lib"
+            />
+            <javac
+                    srcdir="build/src"
+                    destdir="build/src/classes"
+                    includeantruntime="false"
+            />
+        </target>
+        -->
     <target name="main">
-        <mkdir dir="build/src/classes" />
-        <javacc
+        <jjtree
                 target="src/Lexer.jjt"
-                outputdirectory="build/src"
+                outputdirectory="build/src/classes"
+                javacchome="lib"
+                nodeusesparser="true"
+        />
+        <javacc
+                target="build/src/classes/Lexer.jj"
+                outputdirectory="build/src/classes"
                 javacchome="lib"
         />
         <javac
@@ -13,4 +32,5 @@
                 includeantruntime="false"
         />
     </target>
+
 </project>
