@@ -115,11 +115,11 @@ void classDeclaration()#classDeclaration:{}
     <CLASS>id()<LBR>declarationList()<RBR>
 }
 void id()#ID:{Token t;}{
-    t = <ID> {jjThis.value = t.image;}
+    t = <ID> {jjtThis.value = t.image;}
 }
 void declarationList()#declarationlist:{}
 {
-    (declaration() (<COMMA> declaration())*)
+    (declaration() | (<COMMA> declaration())*)
 }
 void declaration()#declaration:{}
 {
@@ -167,7 +167,7 @@ void string()#string:{}
 }
 void funDeclaration()#function:{}
 {
-    ((accessMod())<FUNC><ID><LCB>params()<RCB>statement())
+    ((accessMod())? <FUNC><ID><LCB>(params())<RCB>statement())
 }
 void constructor()#construct:{}
 {
@@ -207,18 +207,17 @@ void ifStmt()#ifStmt:{}
 }
 void expression()#expression:{}
 {
-    mutable()
-    | (mutable() binaryop() mutable())
+    (mutable() binaryop() expression())
     | (mutable() sumop() term())
     | (mutable() mulop() term())
-    | (mutable() eqAssign() mutable())
+    | (mutable() eqAssign() expression())
     | (incdec())
     | immutable()
     | io()
 }
 void mutable()#mutable:{}
 {
-    <VARID> | expression()
+    <VARID> | <LCB>expression()<RCB>
 }
 void binaryop()#binaryOp:{}{
     <LOE>
@@ -281,5 +280,5 @@ void call()#funcCall:{}
 }
 void arguments()#arguments:{}
 {
-    (expression() | (<COMMA>expression())*)
+    (expression() | ((<COMMA>expression())*))
 }

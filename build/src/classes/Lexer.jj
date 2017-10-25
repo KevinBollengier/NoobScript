@@ -182,7 +182,7 @@ void id()   :{/*@bgen(jjtree) ID */
                jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
              }
-/*@egen*/ {jjThis.value = t.image;}/*@bgen(jjtree)*/
+/*@egen*/ {jjtn000.value = t.image;}/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -198,7 +198,7 @@ void declarationList()                :{/*@bgen(jjtree) declarationlist */
 {/*@bgen(jjtree) declarationlist */
     try {
 /*@egen*/
-    (declaration() (<COMMA> declaration())*)/*@bgen(jjtree)*/
+    (declaration() | (<COMMA> declaration())*)/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -474,7 +474,7 @@ void funDeclaration()         :{/*@bgen(jjtree) function */
 {/*@bgen(jjtree) function */
     try {
 /*@egen*/
-    ((accessMod())<FUNC><ID><LCB>params()<RCB>statement())/*@bgen(jjtree)*/
+    ((accessMod())? <FUNC><ID><LCB>(params())<RCB>statement())/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -760,11 +760,10 @@ void expression()           :{/*@bgen(jjtree) expression */
 {/*@bgen(jjtree) expression */
     try {
 /*@egen*/
-    mutable()
-    | (mutable() binaryop() mutable())
+    (mutable() binaryop() expression())
     | (mutable() sumop() term())
     | (mutable() mulop() term())
-    | (mutable() eqAssign() mutable())
+    | (mutable() eqAssign() expression())
     | (incdec())
     | immutable()
     | io()/*@bgen(jjtree)*/
@@ -797,7 +796,7 @@ void mutable()        :{/*@bgen(jjtree) mutable */
 {/*@bgen(jjtree) mutable */
     try {
 /*@egen*/
-    <VARID> | expression()/*@bgen(jjtree)*/
+    <VARID> | <LCB>expression()<RCB>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -1102,7 +1101,7 @@ void arguments()          :{/*@bgen(jjtree) arguments */
 {/*@bgen(jjtree) arguments */
     try {
 /*@egen*/
-    (expression() | (<COMMA>expression())*)/*@bgen(jjtree)*/
+    (expression() | ((<COMMA>expression())*))/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
