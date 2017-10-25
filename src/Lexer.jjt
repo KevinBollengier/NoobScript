@@ -167,7 +167,7 @@ void string()#string:{}
 }
 void funDeclaration()#function:{}
 {
-    ((accessMod())? <FUNC><ID><LCB>params()<RCB>statement())
+    ((accessMod())<FUNC><ID><LCB>params()<RCB>statement())
 }
 void constructor()#construct:{}
 {
@@ -179,7 +179,7 @@ void constrStmt()#constrStmt:{}
 }
 void params()#parameters:{}
 {
-    (varID() | ((<COMMA>varID())*))?
+    varID() | ((<COMMA>varID())*)
 }
 void statement()#statement:{}
 {
@@ -208,10 +208,10 @@ void ifStmt()#ifStmt:{}
 void expression()#expression:{}
 {
     mutable()
-    | (mutable() binaryop() expression())
+    | (mutable() binaryop() mutable())
     | (mutable() sumop() term())
     | (mutable() mulop() term())
-    | (mutable() eqAssign() expression())
+    | (mutable() eqAssign() mutable())
     | (incdec())
     | immutable()
     | io()
@@ -281,5 +281,5 @@ void call()#funcCall:{}
 }
 void arguments()#arguments:{}
 {
-    (expression() | ((<COMMA>expression())*))?
+    (expression() | (<COMMA>expression())*)
 }

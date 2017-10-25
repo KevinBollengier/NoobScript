@@ -474,7 +474,7 @@ void funDeclaration()         :{/*@bgen(jjtree) function */
 {/*@bgen(jjtree) function */
     try {
 /*@egen*/
-    ((accessMod())? <FUNC><ID><LCB>params()<RCB>statement())/*@bgen(jjtree)*/
+    ((accessMod())<FUNC><ID><LCB>params()<RCB>statement())/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -550,7 +550,7 @@ void params()           :{/*@bgen(jjtree) parameters */
 {/*@bgen(jjtree) parameters */
     try {
 /*@egen*/
-    (varID() | ((<COMMA>varID())*))?/*@bgen(jjtree)*/
+    varID() | ((<COMMA>varID())*)/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -761,10 +761,10 @@ void expression()           :{/*@bgen(jjtree) expression */
     try {
 /*@egen*/
     mutable()
-    | (mutable() binaryop() expression())
+    | (mutable() binaryop() mutable())
     | (mutable() sumop() term())
     | (mutable() mulop() term())
-    | (mutable() eqAssign() expression())
+    | (mutable() eqAssign() mutable())
     | (incdec())
     | immutable()
     | io()/*@bgen(jjtree)*/
@@ -1102,7 +1102,7 @@ void arguments()          :{/*@bgen(jjtree) arguments */
 {/*@bgen(jjtree) arguments */
     try {
 /*@egen*/
-    (expression() | ((<COMMA>expression())*))?/*@bgen(jjtree)*/
+    (expression() | (<COMMA>expression())*)/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
