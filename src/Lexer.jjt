@@ -9,11 +9,12 @@ PARSER_BEGIN(Lexer)
 	public class Lexer{
 	    public static void main(String[] args)throws ParseException{
 	        try{
-                Lexer lexer = new Lexer(new java.io.FileInputStream(args[0]));
-                SimpleNode root = lexer.program();
-                root.dump("");
-	        }catch(java.io.FileNotFoundException e){
-	            System.out.println("Parser: the file"+args[0]+"was not found");
+                Lexer lexer = new Lexer(System.in);
+                lexer.program();
+                //SimpleNode root = lexer.program();
+                //root.dump("");
+	        }catch(Exception e){
+	            e.printStackTrace();
 	        }
 	    }
 		 /*public static void main(java.lang.String[] args) throws ParseException,TokenMgrError {
@@ -49,56 +50,54 @@ PARSER_BEGIN(Lexer)
 
 TOKEN:{
 
-   <CONST: "const">
-  | <TRUE: "true">
-  | <FALSE: "false">
-  | <CONSTR:  "construct">
-  | <THIS:  "this">
-  | <FUNC: "function">
-  | <RETURN: "return">
-  | <READ: "read">
-  | <WRITE: "write">
-  | <CLASS: "class">
-  | <PUBLIC: "public">
-  | <PRIVATE: "private">
-  | <IF: "if">
-  | <THEN: "then">
-  | <ELSE: "else">
-  | <WHILE: "asLongAs">
-  | <INT:(["0"-"9"])+>
-  | <ID: (["a"-"z","A"-"Z","0"-"9","_"])+ >
-  | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >
-  | <COMMA:([","])>
-  | <ADD:(["+"])>
-  | <ADDASSIGN: (["+"]["="])>
-  | <SUBASSIGN: (["-"]["="])>
-  | <MULASSIGN: (["*"])(["="])>
-  | <POWASSIGN: (["*"]["*"]["="])>
-  | <DIVASSIGN: (["/"])(["="])>
-  | <INC:(["+"]["+"])>
-  | <SUB:(["-"])>
-  | <DEC:(["-"]["-"])>
-  | <MUL:(["*"])>
-  | <POW:(["*"]["*"])>
-  | <DIV:(["/"])>
-  | <MOD:(["%"])>
-  | <LCB:(["("])>
-  | <RCB:([")"])>
-  | <LBR:(["{"])>
-  | <RBR:(["}"])>
-  | <EQ:(["="])>
-  | <NOT:(["!"])>
-  | <NEQ:(["!"]["="])>
-  | <GT:([">"])>
-  | <LT:(["<"])>
-  | <GOE:([">"]["="])>
-  | <LOE:(["<"]["="])>
-  | <ARROW:(["-"][">"])>
-  | <COMPARISON:(["="]["="])>
-  | <AND:(["&"]["&"])>
-  | <OR:(["|"]["|"])>
-  | <SC:([";"])>
-  | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >
+   <CONST: "const">{System.out.println("CONSTANT");}
+  | <TRUE: "true">{System.out.println("TRUE");}
+  | <FALSE: "false">{System.out.println("FALSE");}
+  | <CONSTR:  "construct">{System.out.println("CONSTR");}
+  | <THIS:  "this">{System.out.println("THIS");}
+  | <FUNC: "function">{System.out.println("FUNCTION");}
+  | <RETURN: "return">{System.out.println("RETURN");}
+  | <READ: "read">{System.out.println("READ");}
+  | <WRITE: "write">{System.out.println("WRITE");}
+  | <CLASS: "class">{System.out.println("CLASS");}
+  | <IF: "if">{System.out.println("IF");}
+  | <THEN: "then">{System.out.println("THEN");}
+  | <ELSE: "else">{System.out.println("ELSE");}
+  | <WHILE: "asLongAs">{System.out.println("WHILE");}
+  | <INT:(["0"-"9"])+>{System.out.println("INT");}
+  | <ID: (["a"-"z","A"-"Z","0"-"9","_"])+ >{System.out.println("ID");}
+  | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >{System.out.println("VARID");}
+  | <COMMA:([","])>{System.out.println("COMMA");}
+  | <ADD:(["+"])>{System.out.println("ADD");}
+  | <ADDASSIGN: (["+"]["="])>{System.out.println("ADDASSIGN");}
+  | <SUBASSIGN: (["-"]["="])>{System.out.println("SUBASSIGN");}
+  | <MULASSIGN: (["*"])(["="])>{System.out.println("MULASSIGN");}
+  | <POWASSIGN: (["*"]["*"]["="])>{System.out.println("POWASSIGN");}
+  | <DIVASSIGN: (["/"])(["="])>{System.out.println("DIVASSIGN");}
+  | <INC:(["+"]["+"])>{System.out.println("INC");}
+  | <SUB:(["-"])>{System.out.println("SUB");}
+  | <DEC:(["-"]["-"])>{System.out.println("DEC");}
+  | <MUL:(["*"])>{System.out.println("MUL");}
+  | <POW:(["*"]["*"])>{System.out.println("POW");}
+  | <DIV:(["/"])>{System.out.println("DIV");}
+  | <MOD:(["%"])>{System.out.println("MOD");}
+  | <LCB:(["("])>{System.out.println("LCB");}
+  | <RCB:([")"])>{System.out.println("RCB");}
+  | <LBR:(["{"])>{System.out.println("LBR");}
+  | <RBR:(["}"])>{System.out.println("RBR");}
+  | <EQ:(["="])>{System.out.println("EQ");}
+  | <NOT:(["!"])>{System.out.println("NOT");}
+  | <NEQ:(["!"]["="])>{System.out.println("NEQ");}
+  | <GT:([">"])>{System.out.println("GT");}
+  | <LT:(["<"])>{System.out.println("LT");}
+  | <GOE:([">"]["="])>{System.out.println("GOE");}
+  | <LOE:(["<"]["="])>{System.out.println("LOE");}
+  | <ARROW:(["-"][">"])>{System.out.println("ARROW");}
+  | <COMPARISON:(["="]["="])>{System.out.println("COMPARISON");}
+  | <AND:(["&"]["&"])>{System.out.println("AND");}
+  | <OR:(["|"]["|"])>{System.out.println("OR");}
+  | <SC:([";"])>{System.out.println("SC");}
+  | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >{System.out.println("STRLIT");}
 }
 
 SKIP:{
@@ -110,106 +109,75 @@ SKIP:{
   |<"/*" (~["*"])* "*" (~["*","/"] (~["*"])* "*" | "*")* "/">
 }
 
-SimpleNode program()#program:{}
+void program():{}
 {
-    classDeclaration()
+    (classDeclaration())*
+     <EOF>
 }
-void classDeclaration()#classDeclaration:{}
+void classDeclaration():{}
 {
-    <CLASS>id()<LBR>declarationList()<RBR>
+    <CLASS>id()<LBR>declaration()<RBR>
 }
-void id()#ID:{Token t;}{
-    t = <ID> {jjtThis.value = t.image;}
+void id():{Token t;}{
+    <ID>
 }
-void declarationList()#declarationlist:{}
+void declaration():{}
 {
-    LOOKAHEAD(3)declaration() |LOOKAHEAD(3) (<COMMA> declaration())*
+    ((varDeclaration()) | (funDeclaration()) | constructor())*
 }
-void declaration()#declaration:{}
+void varDeclaration():{}
 {
-    LOOKAHEAD(2)varDeclaration() |LOOKAHEAD(2) funDeclaration() |LOOKAHEAD(2) constructor()
+    (constant())* ( varDeclarationList() ) <SC>
 }
-void varDeclaration()#vardeclaration:{}
-{
-    ((accessMod())? (constant())? (LOOKAHEAD(3) varDeclarationList()|(varAssignList())<SC>) )
-}
-void accessMod()#accessMod:{}
-{
-    <PRIVATE> | <PUBLIC>
-}
-void constant()#constant:{}
+void constant():{}
 {
     <CONST>
 }
-void varDeclarationList()#varDecList:{}
+void varDeclarationList():{}
 {
-    LOOKAHEAD(2)varID()|(LOOKAHEAD(2)<COMMA>varID())*
+   <VARID>  (<EQ>)*  (<INT>|<TRUE>|<FALSE>|<ID>|<STRLIT>)*
 }
-void varID()#varID:{}
+void funDeclaration():{}
 {
-    <VARID>
+    (<FUNC><ID><LCB>(params())<RCB>statement())
 }
-void varAssignList()#varAssignList:{}
+void constructor():{}
 {
-   (<VARID> <EQ> value())|((<COMMA>varID())*<EQ>value())
+    (<CONSTR><ID><LCB>params()<RCB>constrStmt())
 }
-void value()#value:{}
-{
-    bool()|integer()|string()
-}
-void bool()#bool:{}
-{
-    <TRUE>|<FALSE>
-}
-void integer()#integer:{}
-{
-    <INT>
-}
-void string()#string:{}
-{
-    <STRLIT>
-}
-void funDeclaration()#function:{}
-{
-    ((accessMod())? <FUNC><ID><LCB>(params())<RCB>statement())
-}
-void constructor()#construct:{}
-{
-    ((accessMod())?<CONSTR><ID><LCB>params()<RCB>constrStmt())
-}
-void constrStmt()#constrStmt:{}
+void constrStmt():{}
 {
     <THIS><ARROW><ID><EQ><ID><SC>
 }
-void params()#parameters:{}
+void params():{}
 {
-    varID() | ((<COMMA>varID())*)
+    <VARID> | ((<COMMA><VARID>)*)
 }
-void statement()#statement:{}
+void statement():{}
 {
     expressionStmt() | returnStmt() | iterationStmt() | compoundStmt() | ifStmt()
 }
-void expressionStmt()#expression:{}
+void expressionStmt():{}
 {
     expression()<SC>
 }
-void returnStmt()#returnStmt:{}
+void returnStmt():{}
 {
     <RETURN>(expression())?<SC>
 }
-void iterationStmt()#iteration:{}
+void iterationStmt():{}
 {
     <WHILE><LCB>expression()<RCB>statement()
 }
-void compoundStmt()#cmpdStmt:{}
+void compoundStmt():{}
 {
     <LBR>(statement())*<RBR>
 }
-void ifStmt()#ifStmt:{}
+void ifStmt():{}
 {
     LOOKAHEAD(3)<IF><LCB>expression()<RCB> <THEN> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
 }
-void expression()#expression:{}
+void expression():{}
 {
     LOOKAHEAD(3)(mutable() binaryop() expression())
     | LOOKAHEAD(3) (mutable() sumop() term())
@@ -219,11 +187,11 @@ void expression()#expression:{}
     | LOOKAHEAD(3) immutable()
     | LOOKAHEAD(3) io()
 }
-void mutable()#mutable:{}
+void mutable():{}
 {
     <VARID> | <LCB>expression()<RCB>
 }
-void binaryop()#binaryOp:{}{
+void binaryop():{}{
     <LOE>
     | <LT>
     | <GT>
@@ -234,22 +202,22 @@ void binaryop()#binaryOp:{}{
     | <OR>
     | <AND>
 }
-void sumop()#sumOp:{}
+void sumop():{}
 {
     <ADD> | <SUB>
 }
-void mulop()#mulOp:{}
+void mulop():{}
 {
     <MUL>
     | <DIV>
     | <MOD>
     | <POW>
 }
-void term()#term:{}
+void term():{}
 {
     <VARID> | <ID> | <INT> | <STRLIT>
 }
-void eqAssign()#assignOp:{}
+void eqAssign():{}
 {
      <EQ> expression()
     | <ADDASSIGN> expression()
@@ -258,31 +226,31 @@ void eqAssign()#assignOp:{}
     | <DIVASSIGN> expression()
     | <POWASSIGN> expression()
 }
-void incdec()#incdecOp:{}
+void incdec():{}
 {
     LOOKAHEAD(3)mutable()<INC> |LOOKAHEAD(3) mutable()<DEC>
 }
-void immutable()#immutable:{}
+void immutable():{}
 {
-    call() | varID()
+    call() | <VARID>
 }
-void io()#IO:{}
+void io():{}
 {
     read() | write()
 }
-void read()#input:{}
+void read():{}
 {
     <READ><LCB><RCB>
 }
-void write()#output:{}
+void write():{}
 {
     <WRITE><LCB>params()<RCB>
 }
-void call()#funcCall:{}
+void call():{}
 {
     <ID><LCB>arguments()<RCB>
 }
-void arguments()#arguments:{}
+void arguments():{}
 {
     (expression() | ((<COMMA>expression())*))
 }

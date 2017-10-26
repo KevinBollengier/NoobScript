@@ -1,3 +1,3 @@
 class test{
-    public const $neger = 5
+    $hello;
 }
