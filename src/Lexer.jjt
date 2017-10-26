@@ -135,7 +135,7 @@ void constant():{}
 }
 void varDeclarationList():{}
 {
-   <VARID>  (<EQ>)*  (<INT>|<TRUE>|<FALSE>|<ID>|<STRLIT>)*
+   <VARID>  (<EQ>)*  (<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>)*
 }
 void funDeclaration():{}
 {
@@ -219,7 +219,7 @@ void term():{}
 }
 void eqAssign():{}
 {
-     <EQ> expression()
+      <EQ>(expression()|LOOKAHEAD(2)(<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>))
     | <ADDASSIGN> expression()
     | <SUBASSIGN> expression()
     | <MULASSIGN> expression()
