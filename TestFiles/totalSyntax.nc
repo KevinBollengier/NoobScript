@@ -57,7 +57,7 @@ class dankMeme{
     }
 
     function largerComp($g1){
-        //if($g1 >= $g2)then{
+        if($g1 >= $g2)then{
             $temp = true;
             return $temp;
         } else then{
@@ -71,6 +71,4 @@ class dankMeme{
             write($integer);
         }
     }
-
-    2 = a
 }

@@ -2,15 +2,15 @@ options{
   STATIC = false;
   JDK_VERSION = "1.5";
 }
-PARSER_BEGIN(Lexer)
+PARSER_BEGIN(Parser)
     import java.util.List;
     import java.util.ArrayList;
     import java.io.FileNotFoundException;
-	public class Lexer{
+	public class Parser{
 	    public static void main(String[] args)throws ParseException{
 	        try{
-                Lexer lexer = new Lexer(System.in);
-                lexer.program();
+                Parser parser = new Parser(System.in);
+                parser.program();
                 //SimpleNode root = lexer.program();
                 //root.dump("");
 	        }catch(Exception e){
@@ -46,7 +46,7 @@ PARSER_BEGIN(Lexer)
 		    }
 		    return tokens;
 		}*/
-}PARSER_END(Lexer)
+}PARSER_END(Parser)
 
 TOKEN:{
 
@@ -165,7 +165,7 @@ void returnStmt():{}
 }
 void iterationStmt():{}
 {
-    <WHILE><LCB>expression()<RCB>statement()
+    <WHILE><LCB>comparison()<RCB><THEN>statement()
 }
 
 void ifStmt():{}
