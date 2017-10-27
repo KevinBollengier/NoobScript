@@ -18,47 +18,50 @@ class dankMeme{
     function divide($g1){
         $division;
         if($g2 != 0)then{
-            $division = $g1 / $g2;
+            //$division = $g1 / $g2;
         }
         return $division;
     }
 
     function multiply($g1){
-        $mult = $g1 * g2;
+        //$mult = $g1 * g2;
         return $mult;
     }
 
     function power($g1){
-        $pow = $g**$2;
+        //$pow = $g**$2;
         return $pow;
     }
 
     function add($g1){
-        $add = $g1+$g2;
+        //$add = $g1+$g2;
         return $add;
     }
 
     function substract($g1){
-        $sub = $g1 - $g2;
+        //$sub = $g1 - $g2;
         return $sub;
     }
 
     function mod($g1){
-        $mod = $g1 % $g2;
+        //$mod = $g1 % $g2;
         return $mod;
     }
 
     function testEquality($g1){
         if($g1 == $g2)then{
-            return true;
+            $bool = true;
+            return $bool;
         }
     }
 
     function largerComp($g1){
-        if($g1 >= $g2)then{
-            return true;
+        //if($g1 >= $g2)then{
+            $temp = true;
+            return $temp;
         }else then{
-            return false;
+            $temp = false;
+            return $temp;
         }
     }
 
