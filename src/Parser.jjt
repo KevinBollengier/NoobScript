@@ -137,7 +137,7 @@ void varDeclarationList():{}
 }
 void funDeclaration():{}
 {
-    <FUNC><ID><LCB>params()<RCB><LBR>statement()<RBR>
+    <FUNC><ID><LCB>params()<RCB>statement()
 }
 void constructor():{}
 {
@@ -149,11 +149,11 @@ void constrStmt():{}
 }
 void params():{}
 {
-    <VARID>
+    <VARID> (<COMMA><VARID>)*
 }
 void statement():{}
 {
-  ( LOOKAHEAD(2) (expressionStmt() | returnStmt() | iterationStmt() | ifStmt()))*
+  <LBR>( LOOKAHEAD(2) (expressionStmt() | returnStmt() | iterationStmt() | ifStmt()))*<RBR>
 }
 void expressionStmt():{}
 {
@@ -170,7 +170,7 @@ void iterationStmt():{}
 
 void ifStmt():{}
 {
-    <IF><LCB>comparison()<RCB><THEN><LBR>statement()<RBR>(LOOKAHEAD(1)<ELSE><THEN><LBR>statement()<RBR>)?
+    <IF><LCB>comparison()<RCB><THEN>statement()[LOOKAHEAD(1)<ELSE><THEN>statement()]
 }
 void comparison():{}
 {
@@ -183,8 +183,8 @@ void value():{}
 void expression():{}
 {
 
-      LOOKAHEAD(2)varDeclarationList()
-    | LOOKAHEAD(2)maths()
+      LOOKAHEAD(2)  varDeclarationList()
+    | LOOKAHEAD(2)  maths()
     | LOOKAHEAD(3) (mutable() eqAssign() expression())
     | LOOKAHEAD(3) (incdec())
     | LOOKAHEAD(3) immutable()
@@ -255,5 +255,5 @@ void call():{}
 }
 void arguments():{}
 {
-    (expression() | ((<COMMA>expression())*))
+    (expression() ((<COMMA>expression())*))
 }

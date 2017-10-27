@@ -10,7 +10,7 @@ class dankMeme{
         }
     */
 
-    construct($bool){
+    construct($bool,$string){
         this->$boolean = $bool;
         this->$string = $string;
     }
@@ -35,6 +35,7 @@ class dankMeme{
 
     function add($g1){
         //$add = $g1+$g2;
+        largerComp($hello,$world);
         return $add;
     }
 
@@ -59,7 +60,7 @@ class dankMeme{
         //if($g1 >= $g2)then{
             $temp = true;
             return $temp;
-        }else then{
+        } else then{
             $temp = false;
             return $temp;
         }
