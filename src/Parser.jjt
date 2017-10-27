@@ -14,6 +14,7 @@ PARSER_BEGIN(Lexer)
                 //SimpleNode root = lexer.program();
                 //root.dump("");
 	        }catch(Exception e){
+	            System.out.println(e.getMessage());
 	            e.printStackTrace();
 	        }
 	    }
@@ -72,8 +73,6 @@ TOKEN:{
   | <ADDASSIGN: (["+"]["="])>{System.out.println("ADDASSIGN");}
   | <SUBASSIGN: (["-"]["="])>{System.out.println("SUBASSIGN");}
   | <MULASSIGN: (["*"])(["="])>{System.out.println("MULASSIGN");}
-  | <POWASSIGN: (["*"]["*"]["="])>{System.out.println("POWASSIGN");}
-  | <DIVASSIGN: (["/"])(["="])>{System.out.println("DIVASSIGN");}
   | <INC:(["+"]["+"])>{System.out.println("INC");}
   | <SUB:(["-"])>{System.out.println("SUB");}
   | <DEC:(["-"]["-"])>{System.out.println("DEC");}
@@ -139,7 +138,7 @@ void varDeclarationList():{}
 }
 void funDeclaration():{}
 {
-    <FUNC><ID><LCB>params()<RCB>statement()
+    <FUNC><ID><LCB>params()<RCB><LBR>statement()<RBR>
 }
 void constructor():{}
 {
@@ -151,11 +150,11 @@ void constrStmt():{}
 }
 void params():{}
 {
-    <VARID> | ((<COMMA><VARID>)*)
+    <VARID>
 }
 void statement():{}
 {
-   LOOKAHEAD(2) expressionStmt() | returnStmt() | iterationStmt() | compoundStmt() | ifStmt()
+  ( LOOKAHEAD(2) expressionStmt() | returnStmt() | iterationStmt() | ifStmt())*
 }
 void expressionStmt():{}
 {
@@ -163,23 +162,21 @@ void expressionStmt():{}
 }
 void returnStmt():{}
 {
-    <RETURN>(expression())<SC>
+    <RETURN><ID><SC>
 }
 void iterationStmt():{}
 {
     <WHILE><LCB>expression()<RCB>statement()
 }
-void compoundStmt():{}
-{
-    <LBR>(statement())*<RBR>
-}
+
 void ifStmt():{}
 {
     LOOKAHEAD(3)<IF><LCB>expression()<RCB> <THEN> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
 }
 void expression():{}
 {
-    LOOKAHEAD(3)(mutable() binaryop() expression())
+      varDeclarationList()
+    | LOOKAHEAD(3)(mutable() binaryop() expression())
     | LOOKAHEAD(3) (mutable() sumop() term())
     | LOOKAHEAD(3) (mutable() mulop() term())
     | LOOKAHEAD(3) (mutable() eqAssign() expression())
@@ -208,23 +205,20 @@ void sumop():{}
 }
 void mulop():{}
 {
-    <MUL>
+      <MUL>
     | <DIV>
     | <MOD>
     | <POW>
 }
 void term():{}
 {
-    <VARID> | <ID> | <INT> | <STRLIT>
+    <VARID> | <INT> | <STRLIT>
 }
 void eqAssign():{}
 {
-      <EQ>(expression()|LOOKAHEAD(2)(<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>))
-    | <ADDASSIGN> expression()
+      <ADDASSIGN> expression()
     | <SUBASSIGN> expression()
     | <MULASSIGN> expression()
-    | <DIVASSIGN> expression()
-    | <POWASSIGN> expression()
 }
 void incdec():{}
 {

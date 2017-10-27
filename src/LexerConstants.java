@@ -53,57 +53,53 @@ public interface LexerConstants {
   /** RegularExpression Id. */
   int MULASSIGN = 22;
   /** RegularExpression Id. */
-  int POWASSIGN = 23;
+  int INC = 23;
   /** RegularExpression Id. */
-  int DIVASSIGN = 24;
+  int SUB = 24;
   /** RegularExpression Id. */
-  int INC = 25;
+  int DEC = 25;
   /** RegularExpression Id. */
-  int SUB = 26;
+  int MUL = 26;
   /** RegularExpression Id. */
-  int DEC = 27;
+  int POW = 27;
   /** RegularExpression Id. */
-  int MUL = 28;
+  int DIV = 28;
   /** RegularExpression Id. */
-  int POW = 29;
+  int MOD = 29;
   /** RegularExpression Id. */
-  int DIV = 30;
+  int LCB = 30;
   /** RegularExpression Id. */
-  int MOD = 31;
+  int RCB = 31;
   /** RegularExpression Id. */
-  int LCB = 32;
+  int LBR = 32;
   /** RegularExpression Id. */
-  int RCB = 33;
+  int RBR = 33;
   /** RegularExpression Id. */
-  int LBR = 34;
+  int EQ = 34;
   /** RegularExpression Id. */
-  int RBR = 35;
+  int NOT = 35;
   /** RegularExpression Id. */
-  int EQ = 36;
+  int NEQ = 36;
   /** RegularExpression Id. */
-  int NOT = 37;
+  int GT = 37;
   /** RegularExpression Id. */
-  int NEQ = 38;
+  int LT = 38;
   /** RegularExpression Id. */
-  int GT = 39;
+  int GOE = 39;
   /** RegularExpression Id. */
-  int LT = 40;
+  int LOE = 40;
   /** RegularExpression Id. */
-  int GOE = 41;
+  int ARROW = 41;
   /** RegularExpression Id. */
-  int LOE = 42;
+  int COMPARISON = 42;
   /** RegularExpression Id. */
-  int ARROW = 43;
+  int AND = 43;
   /** RegularExpression Id. */
-  int COMPARISON = 44;
+  int OR = 44;
   /** RegularExpression Id. */
-  int AND = 45;
+  int SC = 45;
   /** RegularExpression Id. */
-  int OR = 46;
-  /** RegularExpression Id. */
-  int SC = 47;
-  /** RegularExpression Id. */
-  int STRLIT = 48;
+  int STRLIT = 46;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -133,8 +129,6 @@ public interface LexerConstants {
     "<ADDASSIGN>",
     "<SUBASSIGN>",
     "<MULASSIGN>",
-    "<POWASSIGN>",
-    "<DIVASSIGN>",
     "<INC>",
     "<SUB>",
     "<DEC>",
@@ -163,8 +157,8 @@ public interface LexerConstants {
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
-    "<token of kind 53>",
-    "<token of kind 54>",
+    "<token of kind 51>",
+    "<token of kind 52>",
   };
 
 }
