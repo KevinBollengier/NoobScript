@@ -1,6 +1,8 @@
 options{
   STATIC = false;
   JDK_VERSION = "1.5";
+  MULTI=true;
+  NODE_PREFIX="";
 }
 PARSER_BEGIN(Parser)
     import java.util.List;
@@ -9,10 +11,10 @@ PARSER_BEGIN(Parser)
 	public class Parser{
 	    public static void main(String[] args)throws ParseException{
 	        try{
-                Parser parser = new Parser(System.in);
-                parser.program();
-                //SimpleNode root = lexer.program();
-                //root.dump("");
+                Parser parser = new Parser(new java.io.FileInputStream(args[0]));
+                //parser.program();
+                SimpleNode root = parser.program();
+                root.dump("");
 	        }catch(Exception e){
 	            System.out.println(e.getMessage());
 	        }
@@ -50,47 +52,47 @@ PARSER_BEGIN(Parser)
 
 TOKEN:{
 
-   <CONST: "const">{System.out.println("CONSTANT");}
-  | <TRUE: "true">{System.out.println("TRUE");}
-  | <FALSE: "false">{System.out.println("FALSE");}
-  | <CONSTR:  "construct">{System.out.println("CONSTR");}
-  | <THIS:  "this">{System.out.println("THIS");}
-  | <FUNC: "function">{System.out.println("FUNCTION");}
-  | <RETURN: "return">{System.out.println("RETURN");}
-  | <READ: "read">{System.out.println("READ");}
-  | <WRITE: "write">{System.out.println("WRITE");}
-  | <CLASS: "class">{System.out.println("CLASS");}
-  | <IF: "if">{System.out.println("IF");}
-  | <THEN: "then">{System.out.println("THEN");}
-  | <ELSE: "else">{System.out.println("ELSE");}
-  | <WHILE: "asLongAs">{System.out.println("WHILE");}
-  | <INT:(["0"-"9"])+>{System.out.println("INT");}
-  | <ID: (["a"-"z","A"-"Z","0"-"9","_"])+ >{System.out.println("ID");}
-  | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >{System.out.println("VARID");}
-  | <COMMA:([","])>{System.out.println("COMMA");}
-  | <ADD:(["+"])>{System.out.println("ADD");}
-  | <SUB:(["-"])>{System.out.println("SUB");}
-  | <MUL:(["*"])>{System.out.println("MUL");}
-  | <POW:"**">{System.out.println("POW");}
-  | <DIV:(["/"])>{System.out.println("DIV");}
-  | <MOD:(["%"])>{System.out.println("MOD");}
-  | <LCB:(["("])>{System.out.println("LCB");}
-  | <RCB:([")"])>{System.out.println("RCB");}
-  | <LBR:(["{"])>{System.out.println("LBR");}
-  | <RBR:(["}"])>{System.out.println("RBR");}
-  | <EQ:(["="])>{System.out.println("EQ");}
-  | <NOT:(["!"])>{System.out.println("NOT");}
-  | <NEQ:"!=">{System.out.println("NEQ");}
-  | <GT:([">"])>{System.out.println("GT");}
-  | <LT:(["<"])>{System.out.println("LT");}
-  | <GOE:">=">{System.out.println("GOE");}
-  | <LOE:"<=">{System.out.println("LOE");}
-  | <ARROW:"->">{System.out.println("ARROW");}
-  | <COMPARISON:"==">{System.out.println("COMPARISON");}
-  | <AND:"&&">{System.out.println("AND");}
-  | <OR:"||">{System.out.println("OR");}
-  | <SC:([";"])>{System.out.println("SC");}
-  | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >{System.out.println("STRLIT");}
+   <CONST: "const">
+  | <TRUE: "true">
+  | <FALSE: "false">
+  | <CONSTR:  "construct">
+  | <THIS:  "this">
+  | <FUNC: "function">
+  | <RETURN: "return">
+  | <READ: "read">
+  | <WRITE: "write">
+  | <CLASS: "class">
+  | <IF: "if">
+  | <THEN: "then">
+  | <ELSE: "else">
+  | <WHILE: "asLongAs">
+  | <INT:(["0"-"9"])+>
+  | <ID: (["a"-"z","A"-"Z","0"-"9","_"])+ >
+  | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >
+  | <COMMA:([","])>
+  | <ADD:(["+"])>
+  | <SUB:(["-"])>
+  | <MUL:(["*"])>
+  | <POW:"**">
+  | <DIV:(["/"])>
+  | <MOD:(["%"])>
+  | <LCB:(["("])>
+  | <RCB:([")"])>
+  | <LBR:(["{"])>
+  | <RBR:(["}"])>
+  | <EQ:(["="])>
+  | <NOT:(["!"])>
+  | <NEQ:"!=">
+  | <GT:([">"])>
+  | <LT:(["<"])>
+  | <GOE:">=">
+  | <LOE:"<=">
+  | <ARROW:"->">
+  | <COMPARISON:"==">
+  | <AND:"&&">
+  | <OR:"||">
+  | <SC:([";"])>
+  | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >
 }
 
 SKIP:{
@@ -102,12 +104,13 @@ SKIP:{
   |<"/*" (~["*"])* "*" (~["*","/"] (~["*"])* "*" | "*")* "/">
 }
 
-void program():{}
+SimpleNode program()#program:{}
 {
-    (classDeclaration())*
+     (classDeclaration())*
      <EOF>
+     {return jjtThis;}
 }
-void classDeclaration():{}
+void classDeclaration()#classDecl:{}
 {
     <CLASS>id()<LBR>declaration()<RBR>
 }

@@ -16,13 +16,13 @@
         -->
     <target name="main">
         <jjtree
-                target="src/Lexer.jjt"
+                target="src/Parser.jjt"
                 outputdirectory="build/src/classes"
                 javacchome="lib"
                 nodeusesparser="true"
         />
         <javacc
-                target="build/src/classes/Lexer.jj"
+                target="build/src/classes/Parser.jj"
                 outputdirectory="build/src/classes"
                 javacchome="lib"
         />
