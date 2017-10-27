@@ -69,14 +69,14 @@ TOKEN:{
   | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >{System.out.println("VARID");}
   | <COMMA:([","])>{System.out.println("COMMA");}
   | <ADD:(["+"])>{System.out.println("ADD");}
-  | <ADDASSIGN: (["+"]["="])>{System.out.println("ADDASSIGN");}
-  | <SUBASSIGN: (["-"]["="])>{System.out.println("SUBASSIGN");}
-  | <MULASSIGN: (["*"])(["="])>{System.out.println("MULASSIGN");}
-  | <INC:(["+"]["+"])>{System.out.println("INC");}
+  | <ADDASSIGN: "+=">{System.out.println("ADDASSIGN");}
+  | <SUBASSIGN: "-=">{System.out.println("SUBASSIGN");}
+  | <MULASSIGN: "*=">{System.out.println("MULASSIGN");}
+  | <INC:"++">{System.out.println("INC");}
   | <SUB:(["-"])>{System.out.println("SUB");}
-  | <DEC:(["-"]["-"])>{System.out.println("DEC");}
+  | <DEC:"--">{System.out.println("DEC");}
   | <MUL:(["*"])>{System.out.println("MUL");}
-  | <POW:(["*"]["*"])>{System.out.println("POW");}
+  | <POW:"**">{System.out.println("POW");}
   | <DIV:(["/"])>{System.out.println("DIV");}
   | <MOD:(["%"])>{System.out.println("MOD");}
   | <LCB:(["("])>{System.out.println("LCB");}
@@ -85,15 +85,15 @@ TOKEN:{
   | <RBR:(["}"])>{System.out.println("RBR");}
   | <EQ:(["="])>{System.out.println("EQ");}
   | <NOT:(["!"])>{System.out.println("NOT");}
-  | <NEQ:(["!"]["="])>{System.out.println("NEQ");}
+  | <NEQ:"!=">{System.out.println("NEQ");}
   | <GT:([">"])>{System.out.println("GT");}
   | <LT:(["<"])>{System.out.println("LT");}
-  | <GOE:([">"]["="])>{System.out.println("GOE");}
-  | <LOE:(["<"]["="])>{System.out.println("LOE");}
-  | <ARROW:(["-"][">"])>{System.out.println("ARROW");}
-  | <COMPARISON:(["="]["="])>{System.out.println("COMPARISON");}
-  | <AND:(["&"]["&"])>{System.out.println("AND");}
-  | <OR:(["|"]["|"])>{System.out.println("OR");}
+  | <GOE:">=">{System.out.println("GOE");}
+  | <LOE:"<=">{System.out.println("LOE");}
+  | <ARROW:"->">{System.out.println("ARROW");}
+  | <COMPARISON:"==">{System.out.println("COMPARISON");}
+  | <AND:"&&">{System.out.println("AND");}
+  | <OR:"||">{System.out.println("OR");}
   | <SC:([";"])>{System.out.println("SC");}
   | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >{System.out.println("STRLIT");}
 }
@@ -133,7 +133,7 @@ void constant():{}
 }
 void varDeclarationList():{}
 {
-   <VARID>  (<EQ>)*  (<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>)*
+   <VARID>  (<EQ>)*  (LOOKAHEAD(2)(<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>))*
 }
 void funDeclaration():{}
 {
@@ -153,7 +153,7 @@ void params():{}
 }
 void statement():{}
 {
-  ( LOOKAHEAD(2) expressionStmt() | returnStmt() | iterationStmt() | ifStmt())*
+  ( LOOKAHEAD(2) (expressionStmt() | returnStmt() | iterationStmt() | ifStmt()))*
 }
 void expressionStmt():{}
 {
@@ -161,7 +161,7 @@ void expressionStmt():{}
 }
 void returnStmt():{}
 {
-    <RETURN><ID><SC>
+    <RETURN>(<VARID>|<ID>)<SC>
 }
 void iterationStmt():{}
 {
@@ -170,14 +170,21 @@ void iterationStmt():{}
 
 void ifStmt():{}
 {
-    LOOKAHEAD(3)<IF><LCB>expression()<RCB> <THEN> statement() | <IF><LCB>expression()<RCB> <THEN> statement() [LOOKAHEAD(1) <ELSE> <THEN> statement()]
+    <IF><LCB>comparison()<RCB><THEN><LBR>statement()<RBR>(LOOKAHEAD(1)<ELSE><THEN><LBR>statement()<RBR>)?
+}
+void comparison():{}
+{
+    value() compoperators() value()
+}
+void value():{}
+{
+    <VARID>|<INT>|<STRLIT>|<TRUE>|<FALSE>
 }
 void expression():{}
 {
-      varDeclarationList()
-    | LOOKAHEAD(3)(mutable() binaryop() expression())
-    | LOOKAHEAD(3) (mutable() sumop() term())
-    | LOOKAHEAD(3) (mutable() mulop() term())
+
+      LOOKAHEAD(2)varDeclarationList()
+    | LOOKAHEAD(2)maths()
     | LOOKAHEAD(3) (mutable() eqAssign() expression())
     | LOOKAHEAD(3) (incdec())
     | LOOKAHEAD(3) immutable()
@@ -187,8 +194,13 @@ void mutable():{}
 {
     <VARID> | <LCB>expression()<RCB>
 }
-void binaryop():{}{
-    <LOE>
+void maths():{}
+{
+    value() mathoperators() value()
+}
+void compoperators():{}
+{
+      <LOE>
     | <LT>
     | <GT>
     | <GOE>
@@ -198,16 +210,14 @@ void binaryop():{}{
     | <OR>
     | <AND>
 }
-void sumop():{}
+void mathoperators():{}
 {
-    <ADD> | <SUB>
-}
-void mulop():{}
-{
-      <MUL>
-    | <DIV>
-    | <MOD>
-    | <POW>
+     <ADD>
+    |<SUB>
+    |<MUL>
+    |<DIV>
+    |<MOD>
+    |<POW>
 }
 void term():{}
 {
