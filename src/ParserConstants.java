@@ -53,53 +53,49 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int MULASSIGN = 22;
   /** RegularExpression Id. */
-  int INC = 23;
+  int SUB = 23;
   /** RegularExpression Id. */
-  int SUB = 24;
+  int MUL = 24;
   /** RegularExpression Id. */
-  int DEC = 25;
+  int POW = 25;
   /** RegularExpression Id. */
-  int MUL = 26;
+  int DIV = 26;
   /** RegularExpression Id. */
-  int POW = 27;
+  int MOD = 27;
   /** RegularExpression Id. */
-  int DIV = 28;
+  int LCB = 28;
   /** RegularExpression Id. */
-  int MOD = 29;
+  int RCB = 29;
   /** RegularExpression Id. */
-  int LCB = 30;
+  int LBR = 30;
   /** RegularExpression Id. */
-  int RCB = 31;
+  int RBR = 31;
   /** RegularExpression Id. */
-  int LBR = 32;
+  int EQ = 32;
   /** RegularExpression Id. */
-  int RBR = 33;
+  int NOT = 33;
   /** RegularExpression Id. */
-  int EQ = 34;
+  int NEQ = 34;
   /** RegularExpression Id. */
-  int NOT = 35;
+  int GT = 35;
   /** RegularExpression Id. */
-  int NEQ = 36;
+  int LT = 36;
   /** RegularExpression Id. */
-  int GT = 37;
+  int GOE = 37;
   /** RegularExpression Id. */
-  int LT = 38;
+  int LOE = 38;
   /** RegularExpression Id. */
-  int GOE = 39;
+  int ARROW = 39;
   /** RegularExpression Id. */
-  int LOE = 40;
+  int COMPARISON = 40;
   /** RegularExpression Id. */
-  int ARROW = 41;
+  int AND = 41;
   /** RegularExpression Id. */
-  int COMPARISON = 42;
+  int OR = 42;
   /** RegularExpression Id. */
-  int AND = 43;
+  int SC = 43;
   /** RegularExpression Id. */
-  int OR = 44;
-  /** RegularExpression Id. */
-  int SC = 45;
-  /** RegularExpression Id. */
-  int STRLIT = 46;
+  int STRLIT = 44;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -129,9 +125,7 @@ public interface ParserConstants {
     "\"+=\"",
     "\"-=\"",
     "\"*=\"",
-    "\"++\"",
     "<SUB>",
-    "\"--\"",
     "<MUL>",
     "\"**\"",
     "<DIV>",
@@ -157,8 +151,8 @@ public interface ParserConstants {
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
-    "<token of kind 51>",
-    "<token of kind 52>",
+    "<token of kind 49>",
+    "<token of kind 50>",
   };
 
 }

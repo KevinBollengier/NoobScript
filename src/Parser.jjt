@@ -69,12 +69,7 @@ TOKEN:{
   | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >{System.out.println("VARID");}
   | <COMMA:([","])>{System.out.println("COMMA");}
   | <ADD:(["+"])>{System.out.println("ADD");}
-  | <ADDASSIGN: "+=">{System.out.println("ADDASSIGN");}
-  | <SUBASSIGN: "-=">{System.out.println("SUBASSIGN");}
-  | <MULASSIGN: "*=">{System.out.println("MULASSIGN");}
-  | <INC:"++">{System.out.println("INC");}
   | <SUB:(["-"])>{System.out.println("SUB");}
-  | <DEC:"--">{System.out.println("DEC");}
   | <MUL:(["*"])>{System.out.println("MUL");}
   | <POW:"**">{System.out.println("POW");}
   | <DIV:(["/"])>{System.out.println("DIV");}
@@ -182,11 +177,8 @@ void value():{}
 }
 void expression():{}
 {
-
       LOOKAHEAD(2)  varDeclarationList()
     | LOOKAHEAD(2)  maths()
-    | LOOKAHEAD(3) (mutable() eqAssign() expression())
-    | LOOKAHEAD(3) (incdec())
     | LOOKAHEAD(3) immutable()
     | LOOKAHEAD(3) io()
 }
@@ -218,20 +210,6 @@ void mathoperators():{}
     |<DIV>
     |<MOD>
     |<POW>
-}
-void term():{}
-{
-    <VARID> | <INT> | <STRLIT>
-}
-void eqAssign():{}
-{
-      <ADDASSIGN> expression()
-    | <SUBASSIGN> expression()
-    | <MULASSIGN> expression()
-}
-void incdec():{}
-{
-    LOOKAHEAD(3)mutable()<INC> |LOOKAHEAD(3) mutable()<DEC>
 }
 void immutable():{}
 {
