@@ -3,7 +3,6 @@ class dankMeme{
     const $max = 255;
     $string = "hello";
 
-   fall();
     /*
     construct($bool,$string){
             this->$boolean = $bool;
@@ -11,12 +10,12 @@ class dankMeme{
         }
     */
 
-    construct($bool,$string){
+    construct($bool){
         this->$boolean = $bool;
         this->$string = $string;
     }
 
-    function divide($g1,$g2){
+    function divide($g1){
         $division;
         if($g2 != 0)then{
             $division = $g1 / $g2;
@@ -24,38 +23,38 @@ class dankMeme{
         return $division;
     }
 
-    function multiply($g1,$g2){
+    function multiply($g1){
         $mult = $g1 * g2;
         return $mult;
     }
 
-    function power($g1,$g2){
+    function power($g1){
         $pow = $g**$2;
         return $pow;
     }
 
-    function add($g1,g$2){
+    function add($g1){
         $add = $g1+$g2;
         return $add;
     }
 
-    function substract($g1,$g2){
+    function substract($g1){
         $sub = $g1 - $g2;
         return $sub;
     }
 
-    function mod($g1,$g2){
+    function mod($g1){
         $mod = $g1 % $g2;
         return $mod;
     }
 
-    function testEquality($g1,$g2){
+    function testEquality($g1){
         if($g1 == $g2)then{
             return true;
         }
     }
 
-    function largerComp($g1,$g2){
+    function largerComp($g1){
         if($g1 >= $g2)then{
             return true;
         }else then{

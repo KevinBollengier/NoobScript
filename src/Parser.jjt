@@ -15,7 +15,6 @@ PARSER_BEGIN(Lexer)
                 //root.dump("");
 	        }catch(Exception e){
 	            System.out.println(e.getMessage());
-	            e.printStackTrace();
 	        }
 	    }
 		 /*public static void main(java.lang.String[] args) throws ParseException,TokenMgrError {
@@ -142,11 +141,11 @@ void funDeclaration():{}
 }
 void constructor():{}
 {
-    (<CONSTR><ID><LCB>params()<RCB>constrStmt())
+    <CONSTR><LCB>params()<RCB><LBR>(constrStmt())*<RBR>
 }
 void constrStmt():{}
 {
-    <THIS><ARROW><ID><EQ><ID><SC>
+    <THIS><ARROW><VARID><EQ><VARID><SC>
 }
 void params():{}
 {
