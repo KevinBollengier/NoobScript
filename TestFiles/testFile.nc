@@ -1,7 +1,5 @@
 class Test{
-    $integer;
-    $integer = 5;
-    function callMe($id){
-        $variable = $string;
+    function neger(){
+        Rechthoek().functie();
     }
 }

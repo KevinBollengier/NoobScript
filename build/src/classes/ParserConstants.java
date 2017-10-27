@@ -39,57 +39,61 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int INT = 15;
   /** RegularExpression Id. */
-  int ID = 16;
+  int CLASSID = 16;
   /** RegularExpression Id. */
-  int VARID = 17;
+  int ID = 17;
   /** RegularExpression Id. */
-  int COMMA = 18;
+  int VARID = 18;
   /** RegularExpression Id. */
-  int ADD = 19;
+  int COMMA = 19;
   /** RegularExpression Id. */
-  int SUB = 20;
+  int ADD = 20;
   /** RegularExpression Id. */
-  int MUL = 21;
+  int SUB = 21;
   /** RegularExpression Id. */
-  int POW = 22;
+  int MUL = 22;
   /** RegularExpression Id. */
-  int DIV = 23;
+  int POW = 23;
   /** RegularExpression Id. */
-  int MOD = 24;
+  int DIV = 24;
   /** RegularExpression Id. */
-  int LCB = 25;
+  int MOD = 25;
   /** RegularExpression Id. */
-  int RCB = 26;
+  int LCB = 26;
   /** RegularExpression Id. */
-  int LBR = 27;
+  int RCB = 27;
   /** RegularExpression Id. */
-  int RBR = 28;
+  int LBR = 28;
   /** RegularExpression Id. */
-  int EQ = 29;
+  int RBR = 29;
   /** RegularExpression Id. */
-  int NOT = 30;
+  int EQ = 30;
   /** RegularExpression Id. */
-  int NEQ = 31;
+  int NOT = 31;
   /** RegularExpression Id. */
-  int GT = 32;
+  int NEQ = 32;
   /** RegularExpression Id. */
-  int LT = 33;
+  int GT = 33;
   /** RegularExpression Id. */
-  int GOE = 34;
+  int LT = 34;
   /** RegularExpression Id. */
-  int LOE = 35;
+  int GOE = 35;
   /** RegularExpression Id. */
-  int ARROW = 36;
+  int LOE = 36;
   /** RegularExpression Id. */
-  int COMPARISON = 37;
+  int ARROW = 37;
   /** RegularExpression Id. */
-  int AND = 38;
+  int COMPARISON = 38;
   /** RegularExpression Id. */
-  int OR = 39;
+  int AND = 39;
   /** RegularExpression Id. */
-  int SC = 40;
+  int OR = 40;
   /** RegularExpression Id. */
-  int STRLIT = 41;
+  int SC = 41;
+  /** RegularExpression Id. */
+  int DOT = 42;
+  /** RegularExpression Id. */
+  int STRLIT = 43;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -112,6 +116,7 @@ public interface ParserConstants {
     "\"else\"",
     "\"asLongAs\"",
     "<INT>",
+    "<CLASSID>",
     "<ID>",
     "<VARID>",
     "<COMMA>",
@@ -137,13 +142,14 @@ public interface ParserConstants {
     "\"&&\"",
     "\"||\"",
     "<SC>",
+    "\".\"",
     "<STRLIT>",
     "\" \"",
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
-    "<token of kind 46>",
-    "<token of kind 47>",
+    "<token of kind 48>",
+    "<token of kind 49>",
   };
 
 }

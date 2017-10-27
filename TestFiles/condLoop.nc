@@ -1,9 +1,17 @@
-$i = 5;
-if($i = 5)then{
-        asLongAs($i < 10)then{
-            $i++;
+class Test{
+    $i = 5;
+    function testFunction($i){
+        if($i == 5)then{
+            asLongAs($i < 10)then{
+                //$i = $i+1;
+            }
+        }else then{
+            $message = "value 10 reached";
+            write($message);
         }
     }
-}else then{
-    write("Value 10 reached");
+    function main(){
+        testFunction($i);
+    }
+
 }

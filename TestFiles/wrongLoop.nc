@@ -1,3 +1,5 @@
-asLongAs(true){
-    write("hello");
+class Test{
+    asLongAs(true){
+        write("hello");
+    }
 }

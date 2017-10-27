@@ -67,6 +67,7 @@ TOKEN:{
   | <ELSE: "else">
   | <WHILE: "asLongAs">
   | <INT:(["0"-"9"])+>
+  | <CLASSID:(["A"-"Z"])(["a"-"z","A"-"Z","0"-"9","_"])+>
   | <ID: (["a"-"z","A"-"Z","0"-"9","_"])+ >
   | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >
   | <COMMA:([","])>
@@ -92,6 +93,7 @@ TOKEN:{
   | <AND:"&&">
   | <OR:"||">
   | <SC:([";"])>
+  | <DOT:".">
   | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >
 }
 
@@ -112,7 +114,11 @@ SimpleNode program()#program:{}
 }
 void classDeclaration()#classDecl:{}
 {
-    <CLASS>id()<LBR>declaration()<RBR>
+    <CLASS>classID()<LBR>declaration()<RBR>
+}
+void classID():{}
+{
+    <CLASSID>
 }
 void id():{Token t;}{
     <ID>
@@ -131,27 +137,23 @@ void constant():{}
 }
 void varDeclarationList():{}
 {
-   <VARID>  (<EQ>)*  (LOOKAHEAD(2)(<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>))*
+   <VARID>  (<EQ>)*  (LOOKAHEAD(2)(<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>|read()))*
 }
 void funDeclaration():{}
 {
-    <FUNC><ID><LCB>params()<RCB>statement()
+    <FUNC><ID><LCB>(arguments())*<RCB>statement()
 }
 void constructor():{}
 {
-    <CONSTR><LCB>params()<RCB><LBR>(constrStmt())*<RBR>
+    <CONSTR><LCB>arguments()<RCB><LBR>(constrStmt())*<RBR>
 }
 void constrStmt():{}
 {
     <THIS><ARROW><VARID><EQ><VARID><SC>
 }
-void params():{}
-{
-    <VARID> (<COMMA><VARID>)*
-}
 void statement():{}
 {
-  <LBR>( LOOKAHEAD(2) (expressionStmt() | returnStmt() | iterationStmt() | ifStmt()))*<RBR>
+  <LBR>( LOOKAHEAD(3) (expressionStmt() | returnStmt() | iterationStmt() | ifStmt()))*<RBR>
 }
 void expressionStmt():{}
 {
@@ -181,8 +183,8 @@ void value():{}
 void expression():{}
 {
       LOOKAHEAD(2)  varDeclarationList()
+    | LOOKAHEAD(2) functionCall()
     | LOOKAHEAD(2)  maths()
-    | LOOKAHEAD(3) immutable()
     | LOOKAHEAD(3) io()
 }
 void mutable():{}
@@ -214,10 +216,6 @@ void mathoperators():{}
     |<MOD>
     |<POW>
 }
-void immutable():{}
-{
-    call() | <VARID>
-}
 void io():{}
 {
     read() | write()
@@ -228,11 +226,11 @@ void read():{}
 }
 void write():{}
 {
-    <WRITE><LCB>params()<RCB>
+    <WRITE><LCB>arguments()<RCB>
 }
-void call():{}
+void functionCall():{}
 {
-    <ID><LCB>arguments()<RCB>
+    <CLASSID><LCB>(arguments())*<RCB><DOT><ID><LCB>(arguments())*<RCB>
 }
 void arguments():{}
 {

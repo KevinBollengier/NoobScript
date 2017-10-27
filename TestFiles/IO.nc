@@ -1,2 +1,6 @@
-write("hello");
-$readVal = read();
+class IO{
+    function io(){
+        $readVal = read();
+        write($readVal);
+    }
+}

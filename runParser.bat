@@ -1,1 +1,1 @@
-java -cp "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\build\src\classes" Parser "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\TestFiles\totalSyntax.nc"
+java -cp "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\build\src\classes" Parser "C:\Users\KevBo\Documents\Cursussen TEC\Compiler Design\Project\Lexer\TestFiles\outScope.nc"

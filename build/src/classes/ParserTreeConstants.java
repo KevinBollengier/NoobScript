@@ -3,15 +3,15 @@ public interface ParserTreeConstants
 {
   public int JJTPROGRAM = 0;
   public int JJTCLASSDECL = 1;
-  public int JJTID = 2;
-  public int JJTDECLARATION = 3;
-  public int JJTVARDECLARATION = 4;
-  public int JJTCONSTANT = 5;
-  public int JJTVARDECLARATIONLIST = 6;
-  public int JJTFUNDECLARATION = 7;
-  public int JJTCONSTRUCTOR = 8;
-  public int JJTCONSTRSTMT = 9;
-  public int JJTPARAMS = 10;
+  public int JJTCLASSID = 2;
+  public int JJTID = 3;
+  public int JJTDECLARATION = 4;
+  public int JJTVARDECLARATION = 5;
+  public int JJTCONSTANT = 6;
+  public int JJTVARDECLARATIONLIST = 7;
+  public int JJTFUNDECLARATION = 8;
+  public int JJTCONSTRUCTOR = 9;
+  public int JJTCONSTRSTMT = 10;
   public int JJTSTATEMENT = 11;
   public int JJTEXPRESSIONSTMT = 12;
   public int JJTRETURNSTMT = 13;
@@ -24,17 +24,17 @@ public interface ParserTreeConstants
   public int JJTMATHS = 20;
   public int JJTCOMPOPERATORS = 21;
   public int JJTMATHOPERATORS = 22;
-  public int JJTIMMUTABLE = 23;
-  public int JJTIO = 24;
-  public int JJTREAD = 25;
-  public int JJTWRITE = 26;
-  public int JJTCALL = 27;
-  public int JJTARGUMENTS = 28;
+  public int JJTIO = 23;
+  public int JJTREAD = 24;
+  public int JJTWRITE = 25;
+  public int JJTFUNCTIONCALL = 26;
+  public int JJTARGUMENTS = 27;
 
 
   public String[] jjtNodeName = {
     "program",
     "classDecl",
+    "classID",
     "id",
     "declaration",
     "varDeclaration",
@@ -43,7 +43,6 @@ public interface ParserTreeConstants
     "funDeclaration",
     "constructor",
     "constrStmt",
-    "params",
     "statement",
     "expressionStmt",
     "returnStmt",
@@ -56,12 +55,11 @@ public interface ParserTreeConstants
     "maths",
     "compoperators",
     "mathoperators",
-    "immutable",
     "io",
     "read",
     "write",
-    "call",
+    "functionCall",
     "arguments",
   };
 }
-/* JavaCC - OriginalChecksum=70f71cbbd27b0a31643611a7d245ba26 (do not edit this line) */
+/* JavaCC - OriginalChecksum=cfedd28ddf9cfdb32d0e11bdfb1a2b5e (do not edit this line) */

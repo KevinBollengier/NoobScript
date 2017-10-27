@@ -71,6 +71,7 @@ TOKEN:{
   | <ELSE: "else">
   | <WHILE: "asLongAs">
   | <INT:(["0"-"9"])+>
+  | <CLASSID:(["A"-"Z"])(["a"-"z","A"-"Z","0"-"9","_"])+>
   | <ID: (["a"-"z","A"-"Z","0"-"9","_"])+ >
   | <VARID:("$")(["a"-"z","A"-"Z","0"-"9","_"])+ >
   | <COMMA:([","])>
@@ -96,6 +97,7 @@ TOKEN:{
   | <AND:"&&">
   | <OR:"||">
   | <SC:([";"])>
+  | <DOT:".">
   | <STRLIT: "\"" (~["\"", "\\"] | "\\\"" | "\\\\")* "\"" >
 }
 
@@ -153,7 +155,7 @@ void classDeclaration()          :{/*@bgen(jjtree) classDecl */
 {/*@bgen(jjtree) classDecl */
     try {
 /*@egen*/
-    <CLASS>id()<LBR>declaration()<RBR>/*@bgen(jjtree)*/
+    <CLASS>classID()<LBR>declaration()<RBR>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -168,6 +170,22 @@ void classDeclaration()          :{/*@bgen(jjtree) classDecl */
         throw (ParseException)jjte000;
       }
       throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+void classID():{/*@bgen(jjtree) classID */
+  classID jjtn000 = new classID(this, JJTCLASSID);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) classID */
+    try {
+/*@egen*/
+    <CLASSID>/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -274,7 +292,21 @@ void varDeclarationList():{/*@bgen(jjtree) varDeclarationList */
 {/*@bgen(jjtree) varDeclarationList */
    try {
 /*@egen*/
-   <VARID>  (<EQ>)*  (LOOKAHEAD(2)(<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>))*/*@bgen(jjtree)*/
+   <VARID>  (<EQ>)*  (LOOKAHEAD(2)(<INT>|<TRUE>|<FALSE>|<VARID>|<STRLIT>|read()))*/*@bgen(jjtree)*/
+   } catch (Throwable jjte000) {
+     if (jjtc000) {
+       jjtree.clearNodeScope(jjtn000);
+       jjtc000 = false;
+     } else {
+       jjtree.popNode();
+     }
+     if (jjte000 instanceof RuntimeException) {
+       throw (RuntimeException)jjte000;
+     }
+     if (jjte000 instanceof ParseException) {
+       throw (ParseException)jjte000;
+     }
+     throw (Error)jjte000;
    } finally {
      if (jjtc000) {
        jjtree.closeNodeScope(jjtn000, true);
@@ -290,7 +322,7 @@ void funDeclaration():{/*@bgen(jjtree) funDeclaration */
 {/*@bgen(jjtree) funDeclaration */
     try {
 /*@egen*/
-    <FUNC><ID><LCB>params()<RCB>statement()/*@bgen(jjtree)*/
+    <FUNC><ID><LCB>(arguments())*<RCB>statement()/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -320,7 +352,7 @@ void constructor():{/*@bgen(jjtree) constructor */
 {/*@bgen(jjtree) constructor */
     try {
 /*@egen*/
-    <CONSTR><LCB>params()<RCB><LBR>(constrStmt())*<RBR>/*@bgen(jjtree)*/
+    <CONSTR><LCB>arguments()<RCB><LBR>(constrStmt())*<RBR>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -358,22 +390,6 @@ void constrStmt():{/*@bgen(jjtree) constrStmt */
     }
 /*@egen*/
 }
-void params():{/*@bgen(jjtree) params */
-  params jjtn000 = new params(this, JJTPARAMS);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) params */
-    try {
-/*@egen*/
-    <VARID> (<COMMA><VARID>)*/*@bgen(jjtree)*/
-    } finally {
-      if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
-      }
-    }
-/*@egen*/
-}
 void statement():{/*@bgen(jjtree) statement */
   statement jjtn000 = new statement(this, JJTSTATEMENT);
   boolean jjtc000 = true;
@@ -382,7 +398,7 @@ void statement():{/*@bgen(jjtree) statement */
 {/*@bgen(jjtree) statement */
   try {
 /*@egen*/
-  <LBR>( LOOKAHEAD(2) (expressionStmt() | returnStmt() | iterationStmt() | ifStmt()))*<RBR>/*@bgen(jjtree)*/
+  <LBR>( LOOKAHEAD(3) (expressionStmt() | returnStmt() | iterationStmt() | ifStmt()))*<RBR>/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -566,8 +582,8 @@ void expression():{/*@bgen(jjtree) expression */
       try {
 /*@egen*/
       LOOKAHEAD(2)  varDeclarationList()
+    | LOOKAHEAD(2) functionCall()
     | LOOKAHEAD(2)  maths()
-    | LOOKAHEAD(3) immutable()
     | LOOKAHEAD(3) io()/*@bgen(jjtree)*/
       } catch (Throwable jjte000) {
         if (jjtc000) {
@@ -695,36 +711,6 @@ void mathoperators():{/*@bgen(jjtree) mathoperators */
      }
 /*@egen*/
 }
-void immutable():{/*@bgen(jjtree) immutable */
-  immutable jjtn000 = new immutable(this, JJTIMMUTABLE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) immutable */
-    try {
-/*@egen*/
-    call() | <VARID>/*@bgen(jjtree)*/
-    } catch (Throwable jjte000) {
-      if (jjtc000) {
-        jjtree.clearNodeScope(jjtn000);
-        jjtc000 = false;
-      } else {
-        jjtree.popNode();
-      }
-      if (jjte000 instanceof RuntimeException) {
-        throw (RuntimeException)jjte000;
-      }
-      if (jjte000 instanceof ParseException) {
-        throw (ParseException)jjte000;
-      }
-      throw (Error)jjte000;
-    } finally {
-      if (jjtc000) {
-        jjtree.closeNodeScope(jjtn000, true);
-      }
-    }
-/*@egen*/
-}
 void io():{/*@bgen(jjtree) io */
   io jjtn000 = new io(this, JJTIO);
   boolean jjtc000 = true;
@@ -779,7 +765,7 @@ void write():{/*@bgen(jjtree) write */
 {/*@bgen(jjtree) write */
     try {
 /*@egen*/
-    <WRITE><LCB>params()<RCB>/*@bgen(jjtree)*/
+    <WRITE><LCB>arguments()<RCB>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -801,15 +787,15 @@ void write():{/*@bgen(jjtree) write */
     }
 /*@egen*/
 }
-void call():{/*@bgen(jjtree) call */
-  call jjtn000 = new call(this, JJTCALL);
+void functionCall():{/*@bgen(jjtree) functionCall */
+  functionCall jjtn000 = new functionCall(this, JJTFUNCTIONCALL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
-{/*@bgen(jjtree) call */
+{/*@bgen(jjtree) functionCall */
     try {
 /*@egen*/
-    <ID><LCB>arguments()<RCB>/*@bgen(jjtree)*/
+    <CLASSID><LCB>(arguments())*<RCB><DOT><ID><LCB>(arguments())*<RCB>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
