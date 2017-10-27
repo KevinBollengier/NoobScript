@@ -59,7 +59,10 @@ class dankMeme{
     function largerComp($g1){
         if($g1 >= $g2)then{
             $temp = true;
-            return $temp;
+            if($temp)then{
+                $helloworld = "it works!";
+                write($helloworld);
+            }
         } else then{
             $temp = false;
             return $temp;
@@ -69,6 +72,11 @@ class dankMeme{
     function iterate($integer){
         asLongAs($integer <= 30)then{
             write($integer);
+            //$integer = $integer + 1;
+            asLongAs($integer <= 20)then{
+                $string = "smaller than 20";
+                write($string);
+            }
         }
     }
 }
